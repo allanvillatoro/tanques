@@ -1,0 +1,100 @@
+
+<ul class="breadcrumb text-center">
+    <li class="active"><h4>Control de Tanques</h4></li>
+</ul>
+
+<div class="row" ng-controller="logoutController">
+    <div class="col-xs-6 col-xs-offset-6">
+        <a href="#" class="pull-right" ng-click='logout()'>
+            <span class="glyphicon glyphicon-log-out"></span> Cerrar sesión
+        </a>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-xs-5 col-xs-offset-1">
+        <!-- Single button -->
+        <div class="btn-group" ng-show="hayVerdes">
+            <button type="button" class="btn btn-success dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Óptimo<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li ng-repeat="tanque in tanquesVerdes" ng-click="seleccionarTanque(tanque)"><a href="#">{{tanque._id}}</a></li>
+            </ul>
+        </div>
+
+        <div class="btn-group" ng-show="hayAmarillos">
+            <button type="button" class="btn btn-warning dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Reorden <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li ng-repeat="tanque in tanquesAmarillos" ng-click="seleccionarTanque(tanque)"><a href="#">{{tanque._id}}</a></li>
+            </ul>
+        </div>
+
+        <div class="btn-group" ng-show="hayRojos">
+            <button type="button" class="btn btn-danger dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Vacíos<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li ng-repeat="tanque in tanquesRojos" ng-click="seleccionarTanque(tanque)"><a href="#">{{tanque._id}}</a></li>
+            </ul>
+        </div>
+
+        <div class="btn-group" ng-show="hayErrores">
+            <button type="button" class="btn btn-danger dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sin medición<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li ng-repeat="tanque in tanquesError" ng-click="seleccionarTanque(tanque)"><a href="#">{{tanque._id}}</a></li>
+            </ul>
+        </div>
+
+    </div>
+	<div class="col-xs-5">
+		<div class="dropdown pull-right">
+			<button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+			Tanque: {{tanqueSeleccionado._id}}
+			<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+				<li ng-repeat="tanque in tanques" ng-click="seleccionarTanque(tanque)"><a href="#">{{tanque._id}}</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+    <h4 class="text-center">{{tanqueSeleccionado.descripcion}}</h4>
+</div>
+
+<div class="row">
+	<div class="col-xs-6">
+    	<div class="pull-right progress progress-bar-vertical">
+    	<div class="progress-bar {{tanqueSeleccionado.cambiarColor()}} progress-bar-striped active" role="progressbar" aria-valuenow="{{tanqueSeleccionado.porcentaje()}}" aria-valuemin="0" aria-valuemax="100" style="height: {{tanqueSeleccionado.porcentaje()}}%;">
+    	</div>
+    </div>
+    </div>
+    <div class="col-xs-6">
+    	<strong>Punto máximo:</strong>
+    	<br>
+    	{{tanqueSeleccionado.capacidad | number: 1}} galones
+    	<br>
+    	<strong>Nivel actual:</strong>
+    	<br>
+    	{{tanqueSeleccionado.nivel | number: 1}} galones, {{tanqueSeleccionado.porcentaje() | number: 1}}%
+        <br>
+        <strong>Punto reorden: </strong>
+        <br>
+        {{tanqueSeleccionado.puntoReOrden() | number: 1}} galones
+        <br>
+        <strong>Punto mínimo: </strong>
+        <br>
+        {{tanqueSeleccionado.puntoMinimo() | number: 1}} galones
+    </div>
+</div>
+
+<div class="row text-center" style="max-width: 900px; margin: 0 auto; font-size: 12px;">
+    <div class="alert alert-danger" role="alert" ng-show="hayErrores"> {{mensajeError}}</div>
+    <div class="alert {{tipoAlerta}}" role="alert" ng-show="hayAlertas"> {{mensajeAlerta}}</div>
+</div>
